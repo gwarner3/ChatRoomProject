@@ -12,9 +12,16 @@ namespace Client
 {
     public partial class Chatroom : Form
     {
-        public Chatroom()
+        Client client; 
+        public Chatroom(Client client)
         {
+            this.client = client;
             InitializeComponent();
+        }
+
+        private void SendMessage(object sender, EventArgs e)
+        {
+            client.Send(Input.Text);
         }
     }
 }

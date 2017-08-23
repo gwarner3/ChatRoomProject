@@ -10,11 +10,19 @@ using System.Windows.Forms;
 
 namespace ChatBox
 {
-    public partial class Form1 : Form
+    public partial class Chatroom : Form
     {
-        public Form1()
+        Client.Client client;
+        public Chatroom()
         {
+            client = new Client.Client("192.168.0.138", 9999);
+
             InitializeComponent();
+        }
+
+        private void Send(object sender, EventArgs e)
+        {
+            client.Send(Input.Text);
         }
     }
 }
