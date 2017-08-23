@@ -20,6 +20,7 @@ namespace Client
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
             clientSocket.Connect(IPAddress.Parse(IP), port);
+            chatroom.DisplayBox.Text += "Welcome to George's Chat house, You are connected.";
             stream = clientSocket.GetStream();
         }
         public void Send(string text)
@@ -30,9 +31,28 @@ namespace Client
         }
         public void Recieve()
         {
-            byte[] recievedMessage = new byte[256];
-            stream.Read(recievedMessage, 0, recievedMessage.Length);
-            chatroom.DisplayBox.Text += Encoding.ASCII.GetString(recievedMessage);
+            try
+            {
+                byte[] recievedMessage = new byte[256];
+                stream.Read(recievedMessage, 0, recievedMessage.Length);
+                chatroom.DisplayBox.Text += Encoding.ASCII.GetString(recievedMessage);
+            }
+            catch
+            {
+                Recieve();
+            }
+        }
+        public static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("Local IP Address Not Found!");
         }
     }
 }
