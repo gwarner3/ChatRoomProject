@@ -45,12 +45,13 @@
             // 
             // DisplayBox
             // 
-            this.DisplayBox.Location = new System.Drawing.Point(196, 12);
+            this.DisplayBox.Location = new System.Drawing.Point(283, 11);
             this.DisplayBox.Name = "DisplayBox";
             this.DisplayBox.ReadOnly = true;
-            this.DisplayBox.Size = new System.Drawing.Size(681, 421);
+            this.DisplayBox.Size = new System.Drawing.Size(604, 421);
             this.DisplayBox.TabIndex = 1;
             this.DisplayBox.Text = "";
+            this.DisplayBox.TextChanged += new System.EventHandler(this.DisplayBox_TextChanged);
             // 
             // Input
             // 

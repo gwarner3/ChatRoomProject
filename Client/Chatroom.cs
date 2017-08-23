@@ -23,5 +23,10 @@ namespace Client
         {
             client.Send(Input.Text);
         }
+
+        private void DisplayBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

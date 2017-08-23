@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{3D7659EC-62A6-419C-89CE-058FD500026C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBox", "ChatBox\ChatBox.csproj", "{3E915C41-86AD-41F5-9397-73C27F764C46}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{3D7659EC-62A6-419C-89CE-058FD500026C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D7659EC-62A6-419C-89CE-058FD500026C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D7659EC-62A6-419C-89CE-058FD500026C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E915C41-86AD-41F5-9397-73C27F764C46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E915C41-86AD-41F5-9397-73C27F764C46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E915C41-86AD-41F5-9397-73C27F764C46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E915C41-86AD-41F5-9397-73C27F764C46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
