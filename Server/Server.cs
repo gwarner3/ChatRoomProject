@@ -17,12 +17,12 @@ namespace Server
         Thread Reciever;
         Thread Acceptor;
         public static Client client;
-        List<Client> Users;
+        public Dictionary<string, Client> Users;
         TcpListener server;
         public Server()
         {
             server = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9999);
-            Users = new List<Client>();
+            Users = new Dictionary<string, Client>();
             server.Start();
         }
         public void Run()
@@ -36,15 +36,18 @@ namespace Server
 
         private void AcceptClient()
         {
+            int clientNumber;
+            clientNumber = 0;
             while (true)
             {
                 TcpClient clientSocket = default(TcpClient);
                 clientSocket = server.AcceptTcpClient();
                 Console.WriteLine("Connected");
                 NetworkStream stream = clientSocket.GetStream();
-                client = new Client(stream, clientSocket);
-                client.UserId = client.Recieve();
-                Users.Add(client);
+                client = new Client(stream, clientSocket, clientNumber);
+                client.Username = client.Recieve();
+
+                Users.Add(client.UserId, client);
                 Reciever = new Thread(new ThreadStart(() => CheckMessages(client)));
                 recievers.Add(Reciever);
                 Reciever.Start();
@@ -57,7 +60,7 @@ namespace Server
         }
         public void PostMessage(string message)
         {
-            foreach (Client client in Users)
+            foreach (KeyValuePair<string, Client> entry in Users)
             {
                 client.Send(message);
             }
@@ -70,7 +73,7 @@ namespace Server
                 try
                 {
                     string message = client.Recieve();
-                    PostMessage($"{client.UserId}: {message}");
+                    PostMessage($"{client.Username}: {message}");
                 }
                 catch (Exception)
                 {

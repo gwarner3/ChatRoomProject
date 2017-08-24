@@ -13,10 +13,12 @@ namespace Server
         public NetworkStream stream;
         TcpClient client;
         public string UserId;
-        public Client(NetworkStream Stream, TcpClient Client)
+        public string Username;
+        public Client(NetworkStream Stream, TcpClient Client, int number)
         {
             stream = Stream;
             client = Client;
+            UserId = number.ToString();
         }
         public void Send(string Message)
         {
