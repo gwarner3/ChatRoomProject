@@ -19,7 +19,7 @@ namespace Client
         {
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
-            clientSocket.Connect(IPAddress.Parse(IP), port);
+            clientSocket.Connect(IPAddress.Parse("192.168.0.138"), port);
             chatroom.DisplayBox.Text += "Welcome to George's Chat house, You are connected.";
             stream = clientSocket.GetStream();
         }

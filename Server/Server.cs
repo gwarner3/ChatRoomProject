@@ -13,6 +13,7 @@ namespace Server
 {
     class Server
     {
+        List<Thread> recievers = new List<Thread>();
         Thread Reciever;
         Thread Acceptor;
         public static Client client;
@@ -26,7 +27,7 @@ namespace Server
         {
             Acceptor = new Thread(new ThreadStart(AcceptClient));
             Acceptor.Start();
-            //CheckMessages();
+
 
 
         }
@@ -40,21 +41,34 @@ namespace Server
                 Console.WriteLine("Connected");
                 NetworkStream stream = clientSocket.GetStream();
                 client = new Client(stream, clientSocket);
- 
+                Reciever = new Thread(new ThreadStart(() => CheckMessages(client)));
+                recievers.Add(Reciever);
+                Reciever.Start();
+
             }
         }
         private void Respond(string body)
         {
              client.Send(body);
         }
-        //private async Task CheckMessages()
-        //{
-        //    await MessageRecieved();
-        //}
+        private void CheckMessages(Client client)
+        {
+            while (true)
+            {
+                try
+                {
+                    client.Recieve();
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("no message yet");
+                }
+            }
+        }
         //private Task<int> MessageRecieved()
         //{
         //    client.stream.Read(client.recievedMessage, 0, client.recievedMessage.Length);
-        //    return 50;
+           
         //}
     }
 }
