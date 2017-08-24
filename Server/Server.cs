@@ -12,6 +12,7 @@ namespace Server
 {
     class Server
     {
+        ILoggable logger;
         List<Thread> recievers = new List<Thread>();
         Thread Reciever;
         Thread Acceptor;
@@ -21,6 +22,14 @@ namespace Server
         Queue<string> queue;
         public Server()
         {
+            server = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9999);
+            Users = new Dictionary<string, Client>();
+            queue = new Queue<string>();
+            server.Start();
+        }
+        public Server(ILoggable logger)
+        {
+            this.logger = logger;
             server = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9999);
             Users = new Dictionary<string, Client>();
             queue = new Queue<string>();
@@ -50,7 +59,6 @@ namespace Server
                 Reciever = new Thread(new ThreadStart(() => CheckMessages(client)));
                 recievers.Add(Reciever);
                 Reciever.Start();
-
             }
         }
         private void Respond(string body)
@@ -73,6 +81,7 @@ namespace Server
                 try
                 {
                     string message = client.Recieve();
+                    logger.RecieveMessage($"{DateTime.Now} {client.Username}: {message}" + Environment.NewLine);
                     PostMessage($"{client.Username}: {message}");
                 }
                 catch (Exception)
