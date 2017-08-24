@@ -18,7 +18,7 @@ namespace Server
 
         public void SaveMessage()
         {
-            string path = @"C:\temp\PermanentChatLog.txt";
+            string path = @"C:\Windows\Temp\PermanentChatLog.txt";
             if (!File.Exists(path))
             {
                 using (StreamWriter sw = File.CreateText(path))

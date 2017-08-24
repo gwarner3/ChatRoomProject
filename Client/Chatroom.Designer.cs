@@ -28,10 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.activeUsersDisplay = new System.Windows.Forms.ListBox();
             this.Input = new System.Windows.Forms.TextBox();
             this.Send = new System.Windows.Forms.Button();
             this.DisplayBox = new System.Windows.Forms.TextBox();
+            this.usersBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.usersBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // activeUsersDisplay
@@ -84,6 +87,8 @@
             this.Controls.Add(this.activeUsersDisplay);
             this.Name = "Chatroom";
             this.Text = "Chatroom";
+            this.Load += new System.EventHandler(this.Chatroom_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.usersBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -95,5 +100,6 @@
         private System.Windows.Forms.TextBox Input;
         private System.Windows.Forms.Button Send;
         public System.Windows.Forms.TextBox DisplayBox;
+        private System.Windows.Forms.BindingSource usersBindingSource;
     }
 }

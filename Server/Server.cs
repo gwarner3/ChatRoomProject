@@ -22,7 +22,7 @@ namespace Server
         Queue<string> queue;
         public Server()
         {
-            server = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9999);
+            server = new TcpListener(IPAddress.Parse("127.0.0.1"), 9999);//IPFinder.GetLocalIPAddress()
             Users = new Dictionary<string, Client>();
             queue = new Queue<string>();
             server.Start();

@@ -15,17 +15,19 @@ namespace Client
     public class Client
     {
         TcpClient clientSocket;
-        NetworkStream stream;
+        public NetworkStream stream;
         Thread Receiver;
         public Chatroom chatroom;
         public string Username;
+        public Users users = new Users();
+
         public Client(string IP, int port)
         {
             Console.WriteLine("please enter a username");
             Username = Console.ReadLine();
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
-            clientSocket.Connect(IPAddress.Parse(IP), port);
+            clientSocket.Connect(IPAddress.Parse("192.168.0.138"), port);
             chatroom.DisplayBox.Text = "Welcome to George's Chat house, You are connected.";
             stream = clientSocket.GetStream();
             Send(Username);

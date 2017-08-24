@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,6 +24,7 @@ namespace Client
             InitializeComponent();
             Thread Reciever = new Thread(new ThreadStart(CheckMessages));
             Reciever.Start();
+            
         }
 
         private void SendMessage(object sender, EventArgs e)
@@ -44,14 +47,15 @@ namespace Client
 
         public void DisplayActiveUsers()
         {
-            Dictionary<string, Client> activeUsers = new Dictionary<string, Client>();
-            activeUsersDisplay.DataSource = new BindingSource(activeUsers, null);
-            //activeUsersDisplay.DisplayMember = client.Username;
-            foreach (var user in activeUsers)
+
+            byte[] recievedMessage;
+            while (true)
             {
-                activeUsersDisplay.ValueMember = "";
+                recievedMessage = new byte[256];
+                client.stream.Read(recievedMessage, 0, recievedMessage.Length);
+                activeUsersDisplay.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () {activeUsersDisplay.Items.Add(Encoding.ASCII.GetString(recievedMessage)); });
             }
-            
+
         }
 
         private void Input_KeyDown(object sender, KeyEventArgs e)
@@ -60,6 +64,12 @@ namespace Client
             {
                 Input.SelectAll();
             }
+        }
+
+        private void Chatroom_Load(object sender, EventArgs e)
+        {
+            Thread userListnener = new Thread(new ThreadStart(DisplayActiveUsers));
+            userListnener.Start();
         }
     }
 }
