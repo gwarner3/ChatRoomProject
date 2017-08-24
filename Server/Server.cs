@@ -17,10 +17,12 @@ namespace Server
         Thread Reciever;
         Thread Acceptor;
         public static Client client;
+        List<Client> Users;
         TcpListener server;
         public Server()
         {
             server = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9999);
+            Users = new List<Client>();
             server.Start();
         }
         public void Run()
@@ -40,7 +42,8 @@ namespace Server
                 clientSocket = server.AcceptTcpClient();
                 Console.WriteLine("Connected");
                 NetworkStream stream = clientSocket.GetStream();
-                client = new Client(stream, clientSocket);
+                client = new Client(stream, clientSocket, this);
+                Users.Add(client);
                 Reciever = new Thread(new ThreadStart(() => CheckMessages(client)));
                 recievers.Add(Reciever);
                 Reciever.Start();
@@ -50,6 +53,13 @@ namespace Server
         private void Respond(string body)
         {
              client.Send(body);
+        }
+        public void PostMessage(string message)
+        {
+            foreach (Client client in Users)
+            {
+                client.Send(message);
+            }
         }
         private void CheckMessages(Client client)
         {
