@@ -68,11 +68,13 @@
             this.DisplayBox.Multiline = true;
             this.DisplayBox.Name = "DisplayBox";
             this.DisplayBox.ReadOnly = true;
+            this.DisplayBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.DisplayBox.Size = new System.Drawing.Size(618, 420);
             this.DisplayBox.TabIndex = 4;
             // 
             // Chatroom
             // 
+            this.AcceptButton = this.Send;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(915, 510);

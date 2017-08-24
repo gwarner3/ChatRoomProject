@@ -50,9 +50,7 @@ namespace Client
                     string message = Encoding.ASCII.GetString(recievedMessage);
                     
                     Console.WriteLine(message);
-                    //chatroom.DisplayBox.Text += (message + "\n");
-                    //chatroom.DisplayMessages("Hard coded message");
-                    chatroom.DisplayBox.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.DisplayMessages("\n" + message); });
+                    chatroom.DisplayBox.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.DisplayMessages(Environment.NewLine + message); });
                 }
                 catch
                 {

@@ -27,6 +27,7 @@ namespace Client
         private void SendMessage(object sender, EventArgs e)
         {
             client.Send(Input.Text);
+            Input.Text = "";
         }
 
         public void CheckMessages()
@@ -38,7 +39,7 @@ namespace Client
         }
         public void DisplayMessages(string message)
         {
-            DisplayBox.Text += message;
+            DisplayBox.AppendText(message);
         }
 
         private void Input_KeyDown(object sender, KeyEventArgs e)

@@ -18,18 +18,18 @@ namespace Server
         public static Client client;
         public Dictionary<string, Client> Users;
         TcpListener server;
+        Queue<string> queue;
         public Server()
         {
             server = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9999);
             Users = new Dictionary<string, Client>();
+            queue = new Queue<string>();
             server.Start();
         }
         public void Run()
         {
             Acceptor = new Thread(new ThreadStart(AcceptClient));
             Acceptor.Start();
-
-
 
         }
 
@@ -45,7 +45,6 @@ namespace Server
                 NetworkStream stream = clientSocket.GetStream();
                 client = new Client(stream, clientSocket, clientNumber);
                 client.Username = client.Recieve();
-
                 Users.Add(client.UserId, client);
                 clientNumber++;
                 Reciever = new Thread(new ThreadStart(() => CheckMessages(client)));
@@ -60,9 +59,10 @@ namespace Server
         }
         public void PostMessage(string message)
         {
+            
             foreach (KeyValuePair<string, Client> entry in Users)
             {
-                client.Send(message);
+                entry.Value.Send(message);
             }
         }
         private void CheckMessages(Client client)
