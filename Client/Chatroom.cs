@@ -40,5 +40,13 @@ namespace Client
                 client.Recieve();
             }
         }
+
+        private void Input_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.A)
+            {
+                Input.SelectAll();
+            }
+        }
     }
 }

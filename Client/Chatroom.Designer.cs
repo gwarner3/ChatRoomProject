@@ -60,6 +60,7 @@
             this.Input.Name = "Input";
             this.Input.Size = new System.Drawing.Size(618, 40);
             this.Input.TabIndex = 2;
+            this.Input.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Input_KeyDown);
             // 
             // Send
             // 

@@ -21,7 +21,7 @@ namespace Client
         {
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
-            clientSocket.Connect(IPAddress.Parse("192.168.0.138"), port);
+            clientSocket.Connect(IPAddress.Parse(IP), port);
             chatroom.DisplayBox.Text += "Welcome to George's Chat house, You are connected.";
             stream = clientSocket.GetStream();
             Receiver = new Thread(new ThreadStart(() => Recieve()));
