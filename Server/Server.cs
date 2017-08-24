@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    class Server
+    class Server : IWatchable
     {
         ILoggable logger;
         List<Thread> recievers = new List<Thread>();
@@ -52,10 +52,11 @@ namespace Server
                 clientSocket = server.AcceptTcpClient();
                 Console.WriteLine("Connected");
                 NetworkStream stream = clientSocket.GetStream();
-                client = new Client(stream, clientSocket, clientNumber);
+                client = new Client(stream, clientSocket, clientNumber, this);
                 string[] message = client.Recieve();
                 client.Username = message[2];
                 Users.Add(client.UserId, client);
+                UserUpdated();
                 clientNumber++;
                 Reciever = new Thread(new ThreadStart(() => CheckMessages(client)));
                 recievers.Add(Reciever);
@@ -92,10 +93,16 @@ namespace Server
                 }
             }
         }
+        public event EventHandler UsersChanged;
+        public void UserUpdated()
+        {
+
+            UsersChanged(this, EventArgs.Empty);
+        }
         //private Task<int> MessageRecieved()
         //{
         //    client.stream.Read(client.recievedMessage, 0, client.recievedMessage.Length);
-           
+
         //}
     }
 }
