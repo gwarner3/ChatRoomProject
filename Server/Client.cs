@@ -25,13 +25,16 @@ namespace Server
             byte[] message = Encoding.ASCII.GetBytes(Message);
             stream.Write(message, 0, message.Count());
         }
-        public string Recieve()
+        public string[] Recieve()
         {
+            string[] recievedMessageContent = new string[3];
             recievedMessage = new byte[256];
             stream.Read(recievedMessage, 0, recievedMessage.Length);
             recievedMessage = CleanMessage(recievedMessage);
-            string recievedMessageString = Encoding.ASCII.GetString(recievedMessage);
-            return recievedMessageString;
+            recievedMessageContent[2] = Encoding.ASCII.GetString(recievedMessage);
+            recievedMessageContent[1] = Username;
+            recievedMessageContent[0] = UserId;
+            return recievedMessageContent;
 
         }
         private byte[] CleanMessage(byte[] message)
