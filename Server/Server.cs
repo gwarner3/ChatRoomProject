@@ -47,6 +47,7 @@ namespace Server
                 client.Username = client.Recieve();
 
                 Users.Add(client.UserId, client);
+                clientNumber++;
                 Reciever = new Thread(new ThreadStart(() => CheckMessages(client)));
                 recievers.Add(Reciever);
                 Reciever.Start();

@@ -36,6 +36,10 @@ namespace Client
                 client.Recieve();
             }
         }
+        public void DisplayMessages(string message)
+        {
+            DisplayBox.Text += message;
+        }
 
         private void Input_KeyDown(object sender, KeyEventArgs e)
         {

@@ -26,7 +26,7 @@ namespace Client
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
             clientSocket.Connect(IPAddress.Parse(IP), port);
-            chatroom.DisplayBox.Text += "Welcome to George's Chat house, You are connected.";
+            chatroom.DisplayBox.Text = "Welcome to George's Chat house, You are connected.";
             stream = clientSocket.GetStream();
             Send(Username);
             Receiver = new Thread(new ThreadStart(() => Recieve()));
@@ -50,7 +50,9 @@ namespace Client
                     string message = Encoding.ASCII.GetString(recievedMessage);
                     
                     Console.WriteLine(message);
-                    chatroom.DisplayBox.Text += message;
+                    //chatroom.DisplayBox.Text += (message + "\n");
+                    //chatroom.DisplayMessages("Hard coded message");
+                    chatroom.DisplayBox.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.DisplayMessages("\n" + message); });
                 }
                 catch
                 {
