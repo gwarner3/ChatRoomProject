@@ -28,20 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.activeUsersDisplay = new System.Windows.Forms.ListBox();
             this.Input = new System.Windows.Forms.TextBox();
             this.Send = new System.Windows.Forms.Button();
             this.DisplayBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // listBox1
+            // activeUsersDisplay
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(12, 12);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(165, 420);
-            this.listBox1.TabIndex = 0;
+            this.activeUsersDisplay.FormattingEnabled = true;
+            this.activeUsersDisplay.ItemHeight = 16;
+            this.activeUsersDisplay.Location = new System.Drawing.Point(12, 12);
+            this.activeUsersDisplay.Name = "activeUsersDisplay";
+            this.activeUsersDisplay.Size = new System.Drawing.Size(165, 420);
+            this.activeUsersDisplay.TabIndex = 0;
             // 
             // Input
             // 
@@ -81,7 +81,7 @@
             this.Controls.Add(this.DisplayBox);
             this.Controls.Add(this.Send);
             this.Controls.Add(this.Input);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.activeUsersDisplay);
             this.Name = "Chatroom";
             this.Text = "Chatroom";
             this.ResumeLayout(false);
@@ -91,7 +91,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox activeUsersDisplay;
         private System.Windows.Forms.TextBox Input;
         private System.Windows.Forms.Button Send;
         public System.Windows.Forms.TextBox DisplayBox;

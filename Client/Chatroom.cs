@@ -42,6 +42,18 @@ namespace Client
             DisplayBox.AppendText(message);
         }
 
+        public void DisplayActiveUsers()
+        {
+            Dictionary<string, Client> activeUsers = new Dictionary<string, Client>();
+            activeUsersDisplay.DataSource = new BindingSource(activeUsers, null);
+            //activeUsersDisplay.DisplayMember = client.Username;
+            foreach (var user in activeUsers)
+            {
+                activeUsersDisplay.ValueMember = "";
+            }
+            
+        }
+
         private void Input_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.A)
