@@ -51,7 +51,6 @@
             this.DisplayBox.Size = new System.Drawing.Size(604, 421);
             this.DisplayBox.TabIndex = 1;
             this.DisplayBox.Text = "";
-            this.DisplayBox.TextChanged += new System.EventHandler(this.DisplayBox_TextChanged);
             // 
             // Input
             // 
