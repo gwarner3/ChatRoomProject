@@ -53,7 +53,8 @@ namespace Server
         }
         private void CheckMessages(Client client)
         {
-            while (true)
+            bool isConnected = true;
+            while (isConnected)
             {
                 try
                 {
@@ -61,7 +62,8 @@ namespace Server
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("no message yet");
+                    Console.WriteLine("Person left chat.");
+                    isConnected = false;
                 }
             }
         }
