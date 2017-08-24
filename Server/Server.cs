@@ -53,7 +53,8 @@ namespace Server
                 Console.WriteLine("Connected");
                 NetworkStream stream = clientSocket.GetStream();
                 client = new Client(stream, clientSocket, clientNumber);
-                client.Username = client.Recieve();
+                string[] message = client.Recieve();
+                client.Username = message[2];
                 Users.Add(client.UserId, client);
                 clientNumber++;
                 Reciever = new Thread(new ThreadStart(() => CheckMessages(client)));
@@ -80,9 +81,9 @@ namespace Server
             {
                 try
                 {
-                    string message = client.Recieve();
-                    logger.RecieveMessage($"{DateTime.Now} {client.Username}: {message}" + Environment.NewLine);
-                    PostMessage($"{client.Username}: {message}");
+                    string[] message = client.Recieve();
+                    logger.RecieveMessage($"{DateTime.Now} {client.Username}: {message[2]}" + Environment.NewLine);
+                    PostMessage($"{message[1]}: {message[2]}");
                 }
                 catch (Exception)
                 {
