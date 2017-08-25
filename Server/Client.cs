@@ -14,13 +14,10 @@ namespace Server
         public NetworkStream stream;
         TcpClient client;
         Server server;
-        //TcpListener UserServer;
         public string UserId;
         public string Username;
         public Client(NetworkStream Stream, TcpClient Client, int number, Server server)
         {
-            //UserServer = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9998);
-            //UserServer.Start();
             this.server = server;
             server.UsersChanged += Server_UsersChanged;
             stream = Stream;

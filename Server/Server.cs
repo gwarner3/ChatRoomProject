@@ -16,6 +16,7 @@ namespace Server
         List<Thread> recievers = new List<Thread>();
         Thread Reciever;
         Thread Acceptor;
+        Thread Broadcaster;
         public static Client client;
         public Dictionary<string, Client> Users;
         TcpListener server;
@@ -39,6 +40,8 @@ namespace Server
         {
             Acceptor = new Thread(new ThreadStart(AcceptClient));
             Acceptor.Start();
+            Broadcaster = new Thread(new ThreadStart(Broadcast));
+            Broadcaster.Start();
 
         }
 
@@ -63,6 +66,19 @@ namespace Server
                 Reciever.Start();
             }
         }
+        private void Broadcast()
+        {
+            string[] message;
+            while (true)
+            {
+                if (queue.Count > 0)
+                {
+                    message = queue.Dequeue();
+                    PostMessage(message[2]);
+                }
+
+            }
+        }
         private void Respond(string body)
         {
              client.Send(body);
@@ -83,8 +99,8 @@ namespace Server
                 try
                 {
                     string[] message = client.Recieve();
+                    queue.Enqueue(message);
                     logger.RecieveMessage($"{DateTime.Now} {client.Username}: {message[2]}" + Environment.NewLine);
-                    PostMessage($"{message[1]}: {message[2]}");
                 }
                 catch (Exception)
                 {
@@ -103,10 +119,6 @@ namespace Server
 
             UsersChanged(this, EventArgs.Empty);
         }
-        //private Task<int> MessageRecieved()
-        //{
-        //    client.stream.Read(client.recievedMessage, 0, client.recievedMessage.Length);
 
-        //}
     }
 }
