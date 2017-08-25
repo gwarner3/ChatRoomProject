@@ -12,7 +12,7 @@ namespace Server
     class Client : IWatcher
     {
         public byte[] recievedMessage;
-        public NetworkStream stream;
+        NetworkStream stream;
         TcpClient client;
         Server server;
         public string UserId;
@@ -41,8 +41,15 @@ namespace Server
          }
         public void Send(string Message)
         {
-            byte[] message = Encoding.ASCII.GetBytes(Message);
-            stream.Write(message, 0, message.Count());
+            try
+            {
+                byte[] message = Encoding.ASCII.GetBytes(Message);
+                stream.Write(message, 0, message.Count());
+            }
+            catch
+            {
+                Console.WriteLine("messageNotSent");
+            }
         }
         public string[] Recieve()
         {
@@ -79,7 +86,7 @@ namespace Server
                 }
                 catch
                 {
-                    Thread.CurrentThread.Abort();
+                Console.WriteLine("the abort was here");
                 }
         }
     }
