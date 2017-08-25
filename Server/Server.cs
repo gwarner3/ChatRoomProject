@@ -99,12 +99,12 @@ namespace Server
             {
                 if (entry.Value.Username == sender)
                 {
-                    entry.Value.Send($"PM to {user}: {message.Substring(stopPoint)}");
+                    entry.Value.Send($"PM to {user}: {message.Substring(stopPoint + 1)}");
                 }
                 if (entry.Value.Username == user)
                 {
                     user = entry.Value.UserId;
-                    entry.Value.Send($"PM from {sender}: {message.Substring(stopPoint)}");
+                    entry.Value.Send($"PM from {sender}: {message.Substring(stopPoint + 1)}");
                 }
 
             }
