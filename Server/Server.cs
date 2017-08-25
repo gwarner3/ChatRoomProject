@@ -94,7 +94,7 @@ namespace Server
         private string GetTarget(string message)
         {
             int stopPoint = message.IndexOf(')');
-            string user = message.Substring(3, stopPoint - 4);
+            string user = message.Substring(4, stopPoint - 4);
             foreach (KeyValuePair<string, Client> entry in Users)
             {
                 if (entry.Value.Username == user)
