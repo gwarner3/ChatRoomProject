@@ -74,7 +74,7 @@ namespace Server
                 if (queue.Count > 0)
                 {
                     message = queue.Dequeue();
-                    PostMessage(message[2]);
+                    PostMessage(message[1] + ": " + message[2]);
                 }
 
             }
