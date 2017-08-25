@@ -80,7 +80,7 @@ namespace Server
                     message = queue.Dequeue();
                     if (message[2].StartsWith("/pm"))
                     {
-                        string target = GetTarget(message[2]);
+                        SendToTarget(message[2], message[1]);
                         
                     }
                     else
@@ -91,21 +91,23 @@ namespace Server
 
             }
         }
-        private string GetTarget(string message)
+        private void SendToTarget(string message, string sender)
         {
             int stopPoint = message.IndexOf(')');
             string user = message.Substring(4, stopPoint - 4);
             foreach (KeyValuePair<string, Client> entry in Users)
             {
+                if (entry.Value.Username == sender)
+                {
+                    entry.Value.Send($"PM to {user}: {message.Substring(stopPoint)}");
+                }
                 if (entry.Value.Username == user)
                 {
                     user = entry.Value.UserId;
-                    entry.Value.Send(message.Substring(stopPoint));
-                    return user;
+                    entry.Value.Send($"PM from {sender}: {message.Substring(stopPoint)}");
                 }
 
             }
-            return "noUser";
         }
         private void Respond(string body)
         {
