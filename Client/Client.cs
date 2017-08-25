@@ -15,7 +15,7 @@ namespace Client
     public class Client
     {
         TcpClient clientSocket;
-        public NetworkStream stream;
+        NetworkStream stream;
         Thread Receiver;
         Thread Displayer;
         Queue<byte[]> queue;
@@ -29,7 +29,7 @@ namespace Client
             Username = Console.ReadLine();
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
-            clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port);
+            clientSocket.Connect(IPAddress.Parse("192.168.181"), port); //IPFinder.GetLocalIPAddress()
             chatroom.DisplayBox.Text = "Welcome to George's Chat house, You are connected.";
             stream = clientSocket.GetStream();
             queue = new Queue<byte[]>();
@@ -67,11 +67,12 @@ namespace Client
                 {
                     byte[] recievedMessage = new byte[256];
                     stream.Read(recievedMessage, 0, recievedMessage.Length);
+                    Console.WriteLine(recievedMessage);
                     queue.Enqueue(recievedMessage);   
                 }
                 catch
                 {
-
+                    Console.WriteLine("DISCONNECTED");
                 }
             }
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Server
@@ -47,6 +48,7 @@ namespace Server
         {
             string[] recievedMessageContent = new string[3];
             recievedMessage = new byte[256];
+            Console.WriteLine("message recieved");
             stream.Read(recievedMessage, 0, recievedMessage.Length);
             recievedMessage = CleanMessage(recievedMessage);
             recievedMessageContent[2] = Encoding.ASCII.GetString(recievedMessage);
@@ -77,6 +79,7 @@ namespace Server
                 }
                 catch
                 {
+                    Thread.CurrentThread.Abort();
                 }
         }
     }

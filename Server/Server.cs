@@ -16,6 +16,7 @@ namespace Server
         List<Thread> recievers = new List<Thread>();
         Thread Reciever;
         Thread Acceptor;
+        private Object thiskey = new Object();
         Thread Broadcaster;
         public static Client client;
         public Dictionary<string, Client> Users;
@@ -58,7 +59,10 @@ namespace Server
                 client = new Client(stream, clientSocket, clientNumber, this);
                 string[] message = client.Recieve();
                 client.Username = message[2];
-                Users.Add(client.UserId, client);
+                lock (thiskey)
+                {
+                    Users.Add(client.UserId, client);
+                }
                 UserUpdated();
                 clientNumber++;
                 Reciever = new Thread(new ThreadStart(() => CheckMessages(client)));
@@ -85,10 +89,13 @@ namespace Server
         }
         public void PostMessage(string message)
         {
-            
-            foreach (KeyValuePair<string, Client> entry in Users)
+            lock (thiskey)
             {
-                entry.Value.Send(message);
+
+                foreach (KeyValuePair<string, Client> entry in Users)
+                {
+                    entry.Value.Send(message);
+                }
             }
         }
         private void CheckMessages(Client client)
@@ -105,9 +112,12 @@ namespace Server
                 catch (Exception)
                 {
                     Console.WriteLine("Person left chat.");
-                    Users.Remove(client.UserId);
-                    string[] errorMessage = new string[3] { client.UserId, client.Username, "/! You have been disconnected" };
-                    queue.Enqueue(errorMessage);
+                    lock (thiskey)
+                    {
+                        Users.Remove(client.UserId);
+                        string[] errorMessage = new string[3] { client.UserId, client.Username, "/! You have been disconnected" };
+                        queue.Enqueue(errorMessage);
+                    }
                     UserUpdated();
                     isConnected = false;
                 }
