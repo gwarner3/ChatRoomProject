@@ -95,14 +95,22 @@ namespace Client
         }
         private byte[] CleanMessage(byte[] message)
         {
-            int i = message.Length -1;
-            while(message[i] == 0)
+            try
             {
-                --i;
+                int i = message.Length - 1;
+                while (message[i] == 0)
+                {
+                    --i;
+                }
+                byte[] CleanMessage = new byte[i + 1];
+                Array.Copy(message, CleanMessage, i + 1);
+                return CleanMessage;
             }
-            byte[] CleanMessage = new byte[i + 1];
-            Array.Copy(message, CleanMessage, i + 1);
-            return CleanMessage;
+            catch
+            {
+                chatroom.DisplayBox.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.DisplayMessages(Environment.NewLine + "This server has been disconnected."); });
+            }
+            return message;
         }
         public static string GetLocalIPAddress()
         {

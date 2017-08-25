@@ -48,7 +48,7 @@ namespace Server
             }
             catch
             {
-                Console.WriteLine("messageNotSent");
+                Console.WriteLine("Message not sent");
             }
         }
         public string[] Recieve()
@@ -86,7 +86,7 @@ namespace Server
                 }
                 catch
                 {
-                Console.WriteLine("the abort was here");
+                Console.WriteLine("Abort was here");
                 }
         }
     }
