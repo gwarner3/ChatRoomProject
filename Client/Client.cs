@@ -81,6 +81,7 @@ namespace Client
             if (message.StartsWith("/<>"))
             {
                 chatroom.activeUsersDisplay.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.activeUsersDisplay.Items.Clear(); });
+                //chatroom.activeUsersDisplay.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.activeUsersDisplay.Data); });
                 string[] names = message.Substring(3).Split(';');
                 foreach (string name in names)
                 {

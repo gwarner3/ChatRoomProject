@@ -78,10 +78,34 @@ namespace Server
                 if (queue.Count > 0)
                 {
                     message = queue.Dequeue();
-                    PostMessage(message[1] + ": " + message[2]);
+                    if (message[2].StartsWith("/pm"))
+                    {
+                        string target = GetTarget(message[2]);
+                        
+                    }
+                    else
+                    {
+                        PostMessage(message[1] + ": " + message[2]);
+                    }
                 }
 
             }
+        }
+        private string GetTarget(string message)
+        {
+            int stopPoint = message.IndexOf(')');
+            string user = message.Substring(3, stopPoint - 4);
+            foreach (KeyValuePair<string, Client> entry in Users)
+            {
+                if (entry.Value.Username == user)
+                {
+                    user = entry.Value.UserId;
+                    entry.Value.Send(message.Substring(stopPoint));
+                    return user;
+                }
+
+            }
+            return "noUser";
         }
         private void Respond(string body)
         {
