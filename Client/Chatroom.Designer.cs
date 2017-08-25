@@ -45,6 +45,7 @@
             this.activeUsersDisplay.Name = "activeUsersDisplay";
             this.activeUsersDisplay.Size = new System.Drawing.Size(165, 420);
             this.activeUsersDisplay.TabIndex = 0;
+            this.activeUsersDisplay.Click += new System.EventHandler(this.activeUsersDisplay_Click);
             // 
             // Input
             // 

@@ -71,5 +71,10 @@ namespace Client
             //Thread userListnener = new Thread(new ThreadStart(DisplayActiveUsers));
             //userListnener.Start();
         }
+
+        private void activeUsersDisplay_Click(object sender, EventArgs e)
+        {
+            Input.Text = $"/pm({activeUsersDisplay.SelectedItem.ToString()})";
+        }
     }
 }
