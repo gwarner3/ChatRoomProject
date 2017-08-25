@@ -109,6 +109,7 @@ namespace Client
             catch
             {
                 chatroom.DisplayBox.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.DisplayMessages(Environment.NewLine + "This server has been disconnected."); });
+                Thread.CurrentThread.Abort();
             }
             return message;
         }
