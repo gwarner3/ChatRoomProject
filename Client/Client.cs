@@ -51,8 +51,7 @@ namespace Client
                     recievedMessage = CleanMessage(recievedMessage);
                     string message = Encoding.ASCII.GetString(recievedMessage);
                     CheckMessageEncoding(message);
-                    Console.WriteLine(message);
-                    chatroom.DisplayBox.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.DisplayMessages(Environment.NewLine + message); });
+                    Console.WriteLine(message);                    
                 }
                 catch
                 {
@@ -70,6 +69,10 @@ namespace Client
                 {
                     chatroom.activeUsersDisplay.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.activeUsersDisplay.Items.Add(name); });
                 }
+            }
+            else
+            {
+                chatroom.DisplayBox.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.DisplayMessages(Environment.NewLine + message); });
             }
         }
         private byte[] CleanMessage(byte[] message)
