@@ -17,6 +17,8 @@ namespace Client
         TcpClient clientSocket;
         public NetworkStream stream;
         Thread Receiver;
+        Thread Displayer;
+        Queue<byte[]> queue;
         public Chatroom chatroom;
         public string Username;
         public Users users = new Users();
@@ -30,15 +32,32 @@ namespace Client
             clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port);
             chatroom.DisplayBox.Text = "Welcome to George's Chat house, You are connected.";
             stream = clientSocket.GetStream();
+            queue = new Queue<byte[]>();
+            Displayer = new Thread(new ThreadStart(DisplayMessages));
             Send(Username);
             Receiver = new Thread(new ThreadStart(() => Recieve()));
             Receiver.Start();
+            Displayer.Start();
         }
         public void Send(string text)
         {
             string messageString = text;
             byte[] message = Encoding.ASCII.GetBytes(messageString);
             stream.Write(message, 0, message.Count());
+        }
+        private void DisplayMessages()
+        {
+            byte[] recievedMessage;
+            while (true)
+            {
+                if (queue.Count > 0)
+                {
+                    recievedMessage = queue.Dequeue();
+                    recievedMessage = CleanMessage(recievedMessage);
+                    string message = Encoding.ASCII.GetString(recievedMessage);
+                    CheckMessageEncoding(message);
+                }
+            }
         }
         public void Recieve()
         {
@@ -48,10 +67,7 @@ namespace Client
                 {
                     byte[] recievedMessage = new byte[256];
                     stream.Read(recievedMessage, 0, recievedMessage.Length);
-                    recievedMessage = CleanMessage(recievedMessage);
-                    string message = Encoding.ASCII.GetString(recievedMessage);
-                    CheckMessageEncoding(message);
-                    Console.WriteLine(message);                    
+                    queue.Enqueue(recievedMessage);   
                 }
                 catch
                 {
