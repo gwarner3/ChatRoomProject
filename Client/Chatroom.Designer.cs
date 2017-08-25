@@ -95,11 +95,10 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox activeUsersDisplay;
         private System.Windows.Forms.TextBox Input;
         private System.Windows.Forms.Button Send;
         public System.Windows.Forms.TextBox DisplayBox;
         private System.Windows.Forms.BindingSource usersBindingSource;
+        public System.Windows.Forms.ListBox activeUsersDisplay;
     }
 }

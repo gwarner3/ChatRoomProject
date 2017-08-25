@@ -8,6 +8,6 @@ namespace Server
 {
     public interface IWatcher
     {
-         void Update(List<string> UserNames);
+         void Update(string name);
     }
 }

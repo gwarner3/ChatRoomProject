@@ -31,13 +31,16 @@ namespace Server
         private void Server_UsersChanged(object sender, EventArgs e)
         {
             List<string> UserNames = new List<string>();
+            string[] names;
+            string usernames;
             foreach (KeyValuePair<string, Client> entry in server.Users)
             {
                 UserNames.Add(entry.Value.Username);
             }
-            Update(UserNames);
-        }
-
+            names = UserNames.ToArray();
+            usernames = string.Join(";", names);
+            Update(usernames);  
+         }
         public void Send(string Message)
         {
             byte[] message = Encoding.ASCII.GetBytes(Message);
@@ -67,24 +70,17 @@ namespace Server
             return CleanMessage;
         }
 
-        public void Update(List<string> UserNames)
+        public void Update(string name)
         {
-            //NetworkStream UserStream;
-            //TcpClient clientSocket = default(TcpClient);
-            //clientSocket = UserServer.AcceptTcpClient();
-            //UserStream = clientSocket.GetStream();
-            foreach(string name in UserNames)
-            {
+
                 try
                 {
-                    byte[] message = Encoding.ASCII.GetBytes(name);
+                    byte[] message = Encoding.ASCII.GetBytes("/<>"+name);
                     stream.Write(message, 0, message.Count());
                 }
                 catch
                 {
-                    Console.WriteLine("Person Left Chat");
                 }
-            }
         }
     }
 }

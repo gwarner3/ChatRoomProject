@@ -27,7 +27,7 @@ namespace Client
             Username = Console.ReadLine();
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
-            clientSocket.Connect(IPAddress.Parse("192.168.0.138"), port);
+            clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port);
             chatroom.DisplayBox.Text = "Welcome to George's Chat house, You are connected.";
             stream = clientSocket.GetStream();
             Send(Username);
@@ -50,13 +50,25 @@ namespace Client
                     stream.Read(recievedMessage, 0, recievedMessage.Length);
                     recievedMessage = CleanMessage(recievedMessage);
                     string message = Encoding.ASCII.GetString(recievedMessage);
-                    
+                    CheckMessageEncoding(message);
                     Console.WriteLine(message);
                     chatroom.DisplayBox.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.DisplayMessages(Environment.NewLine + message); });
                 }
                 catch
                 {
-                    
+
+                }
+            }
+        }
+        private void CheckMessageEncoding(string message)
+        {
+            if (message.StartsWith("/<>"))
+            {
+                chatroom.activeUsersDisplay.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.activeUsersDisplay.Items.Clear(); });
+                string[] names = message.Substring(3).Split(';');
+                foreach (string name in names)
+                {
+                    chatroom.activeUsersDisplay.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.activeUsersDisplay.Items.Add(name); });
                 }
             }
         }

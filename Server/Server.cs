@@ -19,12 +19,12 @@ namespace Server
         public static Client client;
         public Dictionary<string, Client> Users;
         TcpListener server;
-        Queue<string> queue;
+        Queue<string[]> queue;
         public Server()
         {
-            server = new TcpListener(IPAddress.Parse("127.0.0.1"), 9999);//IPFinder.GetLocalIPAddress()
+            server = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9999);//IPFinder.GetLocalIPAddress()
             Users = new Dictionary<string, Client>();
-            queue = new Queue<string>();
+            queue = new Queue<string[]>();
             server.Start();
         }
         public Server(ILoggable logger)
@@ -32,7 +32,7 @@ namespace Server
             this.logger = logger;
             server = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9999);
             Users = new Dictionary<string, Client>();
-            queue = new Queue<string>();
+            queue = new Queue<string[]>();
             server.Start();
         }
         public void Run()
@@ -89,6 +89,10 @@ namespace Server
                 catch (Exception)
                 {
                     Console.WriteLine("Person left chat.");
+                    Users.Remove(client.UserId);
+                    string[] errorMessage = new string[3] { client.UserId, client.Username, "/! You have been disconnected" };
+                    queue.Enqueue(errorMessage);
+                    UserUpdated();
                     isConnected = false;
                 }
             }
