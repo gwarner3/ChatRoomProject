@@ -141,7 +141,7 @@ namespace Server
                     lock (thiskey)
                     {
                         Users.Remove(client.UserId);
-                        string[] errorMessage = new string[3] { client.UserId, client.Username, "/! You have been disconnected" };
+                        string[] errorMessage = new string[3] { client.UserId, client.Username, " Has been disconnected" };
                         queue.Enqueue(errorMessage);
                     }
                     UserUpdated();
