@@ -26,7 +26,7 @@ namespace Client
             GetUserName(); 
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
-            clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port); //IPFinder.GetLocalIPAddress()            
+            clientSocket.Connect(IPAddress.Parse("192.168.0.126"), port); //IPFinder.GetLocalIPAddress()            
             stream = clientSocket.GetStream();
             messageQueue = new Queue<byte[]>();
             Displayer = new Thread(new ThreadStart(DisplayMessages));

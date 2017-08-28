@@ -37,7 +37,14 @@ namespace Client
 
         private void activeUsersDisplay_Click(object sender, EventArgs e)
         {
-            Input.Text = $"/pm({activeUsersDisplay.SelectedItem.ToString()})";
+            try
+            {
+                Input.Text = $"/pm({activeUsersDisplay.SelectedItem.ToString()})";
+            }
+            catch
+            {
+                Console.WriteLine("selected person error");
+            }
         }
     }
 }
