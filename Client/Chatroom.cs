@@ -16,7 +16,6 @@ namespace Client
     public partial class Chatroom : Form
     {
         Client client;
-        
         public Chatroom(Client client)
         {
             
