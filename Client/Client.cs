@@ -29,7 +29,7 @@ namespace Client
             Username = Console.ReadLine();
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
-            clientSocket.Connect(IPAddress.Parse("192.168.0.113"), port); //IPFinder.GetLocalIPAddress()
+            clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port); //IPFinder.GetLocalIPAddress()
             chatroom.DisplayBox.Text = $"Hello {Username}! Welcome to George's Chat house, You are connected.";
             stream = clientSocket.GetStream();
             queue = new Queue<byte[]>();
