@@ -95,7 +95,9 @@ namespace Server
         {
             int stopPoint = message.IndexOf(')');
             string user = message.Substring(4, stopPoint - 4);
-            foreach (KeyValuePair<string, Client> entry in Users)
+            lock (thiskey)
+            {
+              foreach (KeyValuePair<string, Client> entry in Users)
             {
                 if (entry.Value.Username == sender)
                 {
@@ -103,11 +105,12 @@ namespace Server
                 }
                 if (entry.Value.Username == user)
                 {
-                    user = entry.Value.UserId;
+                    //user = entry.Value.UserId;
                     entry.Value.Send($"PM from {sender}: {message.Substring(stopPoint + 1)}");
                 }
-
             }
+        }
+            
         }
         private void Respond(string body)
         {
@@ -141,7 +144,7 @@ namespace Server
                     lock (thiskey)
                     {
                         Users.Remove(client.UserId);
-                        string[] errorMessage = new string[3] { client.UserId, client.Username, " Has been disconnected" };
+                        string[] errorMessage = new string[3] { client.UserId, client.Username, " has been disconnected" };
                         queue.Enqueue(errorMessage);
                     }
                     UserUpdated();
