@@ -24,12 +24,10 @@ namespace Client
 
         public Client(string IP, int port)
         {
-            Console.WriteLine("Please enter a username.");
-            Username = Console.ReadLine();
+            GetUserName(); 
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
-            clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port); //IPFinder.GetLocalIPAddress()
-            chatroom.DisplayBox.Text = $"Hello {Username}! Welcome to George's Chat house, You are connected.";
+            clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port); //IPFinder.GetLocalIPAddress()            
             stream = clientSocket.GetStream();
             messageQueue = new Queue<byte[]>();
             Displayer = new Thread(new ThreadStart(DisplayMessages));
@@ -37,6 +35,11 @@ namespace Client
             Receiver = new Thread(new ThreadStart(Recieve));
             Receiver.Start();
             Displayer.Start();
+        }
+        private void GetUserName()
+        {
+            Console.WriteLine("Please enter a username.");
+            Username = Console.ReadLine();
         }
         public void Send(string text)
         {

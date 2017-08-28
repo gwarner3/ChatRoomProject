@@ -1,14 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client
@@ -21,9 +11,6 @@ namespace Client
             
             this.client = client;
             InitializeComponent();
-            //Thread Reciever = new Thread(new ThreadStart(CheckMessages));
-            //Reciever.Start();
-            
         }
 
         private void SendMessage(object sender, EventArgs e)
@@ -31,14 +18,6 @@ namespace Client
             client.Send(Input.Text);
             Input.Text = "";
         }
-
-        //public void CheckMessages()
-        //{
-        //    while (true)
-        //    {
-        //        client.Recieve();
-        //    }
-        //}
         public void DisplayMessages(string message)
         {
             DisplayBox.AppendText(message);
@@ -53,6 +32,7 @@ namespace Client
 
         private void Chatroom_Load(object sender, EventArgs e)
         {
+            DisplayBox.Text = $"Hello {client.Username}! Welcome to George's Chat house, You are connected.";
         }
 
         private void activeUsersDisplay_Click(object sender, EventArgs e)
