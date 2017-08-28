@@ -18,7 +18,7 @@ namespace Client
         NetworkStream stream;
         Thread Receiver;
         Thread Displayer;
-        Queue<byte[]> queue;
+        Queue<byte[]> messageQueue;
         public Chatroom chatroom;
         public string Username;
 
@@ -31,10 +31,10 @@ namespace Client
             clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port);
             chatroom.DisplayBox.Text = $"Hello {Username}! You are connected.";
             stream = clientSocket.GetStream();
-            queue = new Queue<byte[]>();
+            messageQueue = new Queue<byte[]>();
             Displayer = new Thread(new ThreadStart(DisplayMessages));
             Send(Username);
-            Receiver = new Thread(new ThreadStart(() => Recieve()));
+            Receiver = new Thread(new ThreadStart(Recieve));
             Receiver.Start();
             Displayer.Start();
         }
@@ -49,9 +49,9 @@ namespace Client
             byte[] recievedMessage;
             while (true)
             {
-                if (queue.Count > 0)
+                if (messageQueue.Count > 0)
                 {
-                    recievedMessage = queue.Dequeue();
+                    recievedMessage = messageQueue.Dequeue();
                     recievedMessage = CleanMessage(recievedMessage);
                     string message = Encoding.ASCII.GetString(recievedMessage);
                     CheckMessageEncoding(message);
@@ -67,7 +67,7 @@ namespace Client
                     byte[] recievedMessage = new byte[256];
                     stream.Read(recievedMessage, 0, recievedMessage.Length);
                     Console.WriteLine(recievedMessage);
-                    queue.Enqueue(recievedMessage);   
+                    messageQueue.Enqueue(recievedMessage);   
                 }
                 catch
                 {
