@@ -13,20 +13,20 @@ namespace Server
     class Server : IWatchable
     {
         ILoggable logger;
-        List<Thread> recievers = new List<Thread>();
+        TcpListener server;
         Thread Reciever;
         Thread Acceptor;
-        private Object thiskey = new Object();
         Thread Broadcaster;
-        public static Client client;
-        public Dictionary<string, Client> Users;
-        TcpListener server;
         Queue<string[]> queue;
+        public Client client; //static
+        public Dictionary<string, Client> Users;
+        private object thiskey;
         public Server()
         {
-            server = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9999);//IPFinder.GetLocalIPAddress()
+            server = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9999); //IPFinder.GetLocalIPAddress()
             Users = new Dictionary<string, Client>();
             queue = new Queue<string[]>();
+            thiskey = new object();
             server.Start();
         }
         public Server(ILoggable logger)
@@ -35,6 +35,7 @@ namespace Server
             server = new TcpListener(IPAddress.Parse(IPFinder.GetLocalIPAddress()), 9999);
             Users = new Dictionary<string, Client>();
             queue = new Queue<string[]>();
+            thiskey = new object();
             server.Start();
         }
         public void Run()
@@ -52,23 +53,26 @@ namespace Server
             clientNumber = 0;
             while (true)
             {
-                TcpClient clientSocket = default(TcpClient);
+                TcpClient clientSocket;
                 clientSocket = server.AcceptTcpClient();
                 Console.WriteLine("Connected");
                 NetworkStream stream = clientSocket.GetStream();
                 client = new Client(stream, clientSocket, clientNumber, this);
-                string[] message = client.Recieve();
-                client.Username = message[2];
-                lock (thiskey)
-                {
-                    Users.Add(client.UserId, client);
-                }
-                UserUpdated();
+                SetClientUserName(client);
                 clientNumber++;
                 Reciever = new Thread(new ThreadStart(() => CheckMessages(client)));
-                recievers.Add(Reciever);
                 Reciever.Start();
             }
+        }
+        private void SetClientUserName(Client client)
+        {
+            string[] message = client.Recieve();
+            client.Username = message[2];
+            lock (thiskey)
+            {
+                Users.Add(client.UserId, client);
+            }
+            UserUpdated();
         }
         private void Broadcast()
         {
@@ -105,7 +109,6 @@ namespace Server
                 }
                 if (entry.Value.Username == user)
                 {
-                    //user = entry.Value.UserId;
                     entry.Value.Send($"PM from {sender}: {message.Substring(stopPoint + 1)}");
                 }
             }
@@ -140,17 +143,20 @@ namespace Server
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Person left chat.");
-                    lock (thiskey)
-                    {
-                        Users.Remove(client.UserId);
-                        string[] errorMessage = new string[3] { client.UserId, client.Username, " has been disconnected" };
-                        queue.Enqueue(errorMessage);
-                    }
-                    UserUpdated();
+                    RemoveUser(client);
                     isConnected = false;
                 }
             }
+        }
+        private void RemoveUser(Client client)
+        {
+            lock (thiskey)
+            {
+                Users.Remove(client.UserId);
+                string[] errorMessage = new string[3] { client.UserId, client.Username, " has been disconnected" };
+                queue.Enqueue(errorMessage);
+            }
+            UserUpdated();
         }
         public event EventHandler UsersChanged;
         public void UserUpdated()

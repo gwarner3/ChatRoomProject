@@ -28,8 +28,8 @@ namespace Client
             Username = Console.ReadLine();
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
-            clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port);
-            chatroom.DisplayBox.Text = $"Hello {Username}! You are connected.";
+            clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port); //IPFinder.GetLocalIPAddress()
+            chatroom.DisplayBox.Text = $"Hello {Username}! Welcome to George's Chat house, You are connected.";
             stream = clientSocket.GetStream();
             messageQueue = new Queue<byte[]>();
             Displayer = new Thread(new ThreadStart(DisplayMessages));
