@@ -16,14 +16,13 @@ namespace Client
     public partial class Chatroom : Form
     {
         Client client;
-        
         public Chatroom(Client client)
         {
             
             this.client = client;
             InitializeComponent();
-            Thread Reciever = new Thread(new ThreadStart(CheckMessages));
-            Reciever.Start();
+            //Thread Reciever = new Thread(new ThreadStart(CheckMessages));
+            //Reciever.Start();
             
         }
 
@@ -33,31 +32,17 @@ namespace Client
             Input.Text = "";
         }
 
-        public void CheckMessages()
-        {
-            while (true)
-            {
-                client.Recieve();
-            }
-        }
+        //public void CheckMessages()
+        //{
+        //    while (true)
+        //    {
+        //        client.Recieve();
+        //    }
+        //}
         public void DisplayMessages(string message)
         {
             DisplayBox.AppendText(message);
         }
-
-        //public void DisplayActiveUsers()
-        //{
-
-        //    byte[] recievedMessage;
-        //    while (true)
-        //    {
-        //        recievedMessage = new byte[256];
-        //        client.stream.Read(recievedMessage, 0, recievedMessage.Length);
-        //        activeUsersDisplay.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () {activeUsersDisplay.Items.Add(Encoding.ASCII.GetString(recievedMessage)); });
-        //    }
-
-        //}
-
         private void Input_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.A)
@@ -68,8 +53,6 @@ namespace Client
 
         private void Chatroom_Load(object sender, EventArgs e)
         {
-            //Thread userListnener = new Thread(new ThreadStart(DisplayActiveUsers));
-            //userListnener.Start();
         }
 
         private void activeUsersDisplay_Click(object sender, EventArgs e)

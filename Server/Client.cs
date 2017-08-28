@@ -12,11 +12,11 @@ namespace Server
     class Client : IWatcher
     {
         public byte[] recievedMessage;
+        public string UserId;
+        public string Username;
         NetworkStream stream;
         TcpClient client;
         Server server;
-        public string UserId;
-        public string Username;
         public Client(NetworkStream Stream, TcpClient Client, int number, Server server)
         {
             this.server = server;
@@ -28,17 +28,22 @@ namespace Server
 
         private void Server_UsersChanged(object sender, EventArgs e)
         {
-            List<string> UserNames = new List<string>();
+            List<string> UserNames;
             string[] names;
-            string usernames;
+            UserNames = new List<string>();
             foreach (KeyValuePair<string, Client> entry in server.Users)
             {
                 UserNames.Add(entry.Value.Username);
             }
             names = UserNames.ToArray();
-            usernames = string.Join(";", names);
-            Update(usernames);  
+            PackageNamesForMessage(names);
          }
+        private void PackageNamesForMessage(string[] names)
+        {
+            string usernames;
+            usernames = string.Join(";", names);
+            Update(usernames);
+        }
         public void Send(string Message)
         {
             try
@@ -53,16 +58,21 @@ namespace Server
         }
         public string[] Recieve()
         {
-            string[] recievedMessageContent = new string[3];
+            string[] recievedMessageContent;
             recievedMessage = new byte[256];
-            Console.WriteLine("message recieved");
             stream.Read(recievedMessage, 0, recievedMessage.Length);
             recievedMessage = CleanMessage(recievedMessage);
+            recievedMessageContent = SortMessage(recievedMessage);
+            return recievedMessageContent;
+
+        }
+        private string[] SortMessage(byte[] recievedMessage)
+        {
+            string[] recievedMessageContent = new string[3];
             recievedMessageContent[2] = Encoding.ASCII.GetString(recievedMessage);
             recievedMessageContent[1] = Username;
             recievedMessageContent[0] = UserId;
             return recievedMessageContent;
-
         }
         private byte[] CleanMessage(byte[] message)
         {
