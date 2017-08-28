@@ -25,12 +25,12 @@ namespace Client
 
         public Client(string IP, int port)
         {
-            Console.WriteLine("please enter a username");
+            Console.WriteLine("Please enter a username.");
             Username = Console.ReadLine();
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
-            clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port); //IPFinder.GetLocalIPAddress()
-            chatroom.DisplayBox.Text = $"Hello {Username}! Welcome to George's Chat house, You are connected.";
+            clientSocket.Connect(IPAddress.Parse(IPFinder.GetLocalIPAddress()), port);
+            chatroom.DisplayBox.Text = $"Hello {Username}! You are connected.";
             stream = clientSocket.GetStream();
             queue = new Queue<byte[]>();
             Displayer = new Thread(new ThreadStart(DisplayMessages));
@@ -81,7 +81,6 @@ namespace Client
             if (message.StartsWith("/<>"))
             {
                 chatroom.activeUsersDisplay.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.activeUsersDisplay.Items.Clear(); });
-                //chatroom.activeUsersDisplay.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.activeUsersDisplay.Data); });
                 string[] names = message.Substring(3).Split(';');
                 foreach (string name in names)
                 {
