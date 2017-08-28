@@ -21,7 +21,6 @@ namespace Client
         Queue<byte[]> queue;
         public Chatroom chatroom;
         public string Username;
-        public Users users = new Users();
 
         public Client(string IP, int port)
         {
