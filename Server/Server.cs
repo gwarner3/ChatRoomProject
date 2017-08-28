@@ -18,7 +18,7 @@ namespace Server
         Thread Acceptor;
         Thread Broadcaster;
         Queue<string[]> queue;
-        public Client client; //static
+        public Client client;
         public Dictionary<string, Client> Users;
         private object thiskey;
         public Server()
