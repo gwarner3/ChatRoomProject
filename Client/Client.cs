@@ -21,11 +21,10 @@ namespace Client
         Queue<byte[]> queue;
         public Chatroom chatroom;
         public string Username;
-        public Users users = new Users();
 
         public Client(string IP, int port)
         {
-            Console.WriteLine("please enter a username");
+            Console.WriteLine("Please enter a username.");
             Username = Console.ReadLine();
             chatroom = new Chatroom(this);
             clientSocket = new TcpClient();
@@ -81,7 +80,6 @@ namespace Client
             if (message.StartsWith("/<>"))
             {
                 chatroom.activeUsersDisplay.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.activeUsersDisplay.Items.Clear(); });
-                //chatroom.activeUsersDisplay.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () { chatroom.activeUsersDisplay.Data); });
                 string[] names = message.Substring(3).Split(';');
                 foreach (string name in names)
                 {
